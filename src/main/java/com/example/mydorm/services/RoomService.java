@@ -1,9 +1,12 @@
 package com.example.mydorm.services;
 
+import com.example.mydorm.models.Room;
 import com.example.mydorm.models.User;
 import com.example.mydorm.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -14,8 +17,11 @@ public class RoomService {
         roomRepository.insert(name, bio, admin);
     }
 
-    public int getRoomId(int id) {
-        return roomRepository.getRoomId(id);
-        )
+    public Room getRoom(int id) {
+        return roomRepository.getRoom(id);
+    }
+
+    public List<Room> getRooms(int id) {
+        return roomRepository.getRooms(id);
     }
 }

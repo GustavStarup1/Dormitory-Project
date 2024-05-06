@@ -11,10 +11,15 @@
 <nav th:insert="~{home/fragments/navigation::navbar}"></nav>
 <h1>Forside</h1>
 <aside>
-    <div class="sidebar">
+    <div th:if="${user != null}" class="sidebar">
         <ul>
             <li>
-                <a href=""
+                <a target="iframe" th:href="@{/room/}">Rooms</a>
+                <ul>
+                    <li th:each="room : ${rooms}">
+                        <a target="iframe" th:href="@{/room/{id}(id=${room.id})}" th:text="${room.name}"></a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>

@@ -1,13 +1,15 @@
 package com.example.mydorm.repository;
 
+import com.example.mydorm.models.*;
 import com.example.mydorm.models.Room;
-import com.example.mydorm.models.int;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class RoomRepository {
@@ -29,9 +31,16 @@ public class RoomRepository {
         jdbcTemplate.update(insertRoomProfileQuery, roomId, adminId);
     }
 
+    public List<Room> getRooms(int id) {
+        String query = "SELECT * FROM room " + // Vælg alle kolonner fra tabellen "room"
+                "INNER JOIN room_profile ON room.id = room_profile.room_id " + // laver en INNER JOIN mellem "room" og "room_profile" baseret på rum-id
+                "WHERE room_profile.profile_id = ?;"; // Filtrer resultater baseret på brugerprofilens id
+        RowMapper<Room> rowMapper = new BeanPropertyRowMapper<>(Room.class);
+        return jdbcTemplate.query(query, rowMapper, id);
+    }
 
-    public int getRoomId(int id) {
-        String query = "SELECT * FROM room_profile WHERE profile_id = ?;";
+    public Room getRoom(int id) {
+        String query = "SELECT * FROM room WHERE id = ?;";
         RowMapper<Room> rowMapper = new BeanPropertyRowMapper<>(Room.class);
         return jdbcTemplate.queryForObject(query, rowMapper, id);
     }
