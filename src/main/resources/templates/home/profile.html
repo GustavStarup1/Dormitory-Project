@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<header>
+    <div>
+        <h1 th:text="${user.firstName + ' ' + user.lastName}"></h1>
+        <h2 th:if="${!edit}">Oplysninger</h2>
+        <h2 th:unless="${!edit}">Rediger</h2>
+    </div>
+</header>
+<table>
+    <tr>
+        <td><p th:if="${!edit}" th:text="${user.email}"></p></td>
+        <td><form th:if="${!edit}" action="/profile/edit" method="post">
+            <button type="submit">Skift email</button>
+        </form>
+        </td>
+    </tr>
+
+
+        <form th:if="${edit}" action="/profile/save" method="post">
+            <label for="email">Email: </label>
+            <br>
+            <input type="email" id="email" name="email" th:value="${user.email}">
+            <br>
+            <label for="password"> New password:</label>
+            <br>
+            <input type="password" id="password" name="password" placeholder="New password"> <!--overvej at gøre så de skal validere deres gamle password.-->
+            <button type="submit">Gem</button>
+        </form>
+</table>
+</body>
+</html>

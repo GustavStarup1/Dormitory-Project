@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Profile</title>
+</head>
+<body>
+<div>
+    <form action="/new_user" method="post">
+        <div>
+            <label for="firstName">Fornavn:</label>
+            <input type="text" name="firstName" id="firstName" required>
+        </div>
+        <div>
+            <label for="lastName">Efternavn:</label>
+            <input type="text" name="lastName" id="lastName" required >
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="text" th:name="password" id="password" th:value="${password}" readonly> HUSK password skriv evt. ned
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+</body>
+</html>
