@@ -1,6 +1,7 @@
 package com.example.mydorm.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private int id;
@@ -9,8 +10,8 @@ public class User {
     private String email;
     private String password;
     private boolean admin;
-    private ArrayList<Room> rooms;
-    private ArrayList<Room> adminRooms;
+    private List<Room> rooms;
+    private List<Room> adminRooms;
 
 
     public User() {
@@ -64,19 +65,19 @@ public class User {
         this.admin = admin;
     }
 
-    public ArrayList<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(ArrayList<Room> rooms) {
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 
-    public ArrayList<Room> getAdminRooms() {
+    public List<Room> getAdminRooms() {
         return adminRooms;
     }
 
-    public void setAdminRooms(ArrayList<Room> adminRooms) {
+    public void setAdminRooms(List<Room> adminRooms) {
         this.adminRooms = adminRooms;
     }
 }

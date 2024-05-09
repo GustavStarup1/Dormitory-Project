@@ -27,7 +27,7 @@ public class RoomRepository {
         Integer roomId = jdbcTemplate.queryForObject(getRoomIdQuery, Integer.class);
 
         // Tilknyt administratorprofilen til rummet
-        String insertRoomProfileQuery = "INSERT INTO room_profile (room_id, profile_id, is_admin) VALUES (?, ?, 1);";
+        String insertRoomProfileQuery = "INSERT INTO room_profile (room_id, profile_id, admin) VALUES (?, ?, 1);";
         jdbcTemplate.update(insertRoomProfileQuery, roomId, adminId);
     }
 
@@ -39,9 +39,22 @@ public class RoomRepository {
         return jdbcTemplate.query(query, rowMapper, id);
     }
 
-    public Room getRoom(int id) {
+    public Room getRoom(int roomId, int userId) {
+        String query = "SELECT * FROM room " +
+                "INNER JOIN room_profile ON room.id = room_profile.room_id " +
+                "WHERE room_profile.room_id = ? AND room_profile.profile_id = ?;";
+        RowMapper<Room> rowMapper = new BeanPropertyRowMapper<>(Room.class);
+        return jdbcTemplate.queryForObject(query, rowMapper, roomId, userId);
+    }
+
+    public Room getRoom(int roomId) {
         String query = "SELECT * FROM room WHERE id = ?;";
         RowMapper<Room> rowMapper = new BeanPropertyRowMapper<>(Room.class);
-        return jdbcTemplate.queryForObject(query, rowMapper, id);
+        return jdbcTemplate.queryForObject(query, rowMapper, roomId);
+    }
+
+    public void updateRoom(int id, String name, String bio) {
+            String query = "UPDATE mydorm.room SET name = ?, bio = ? WHERE id = ?;";
+            jdbcTemplate.update(query, name, bio, id);
     }
 }

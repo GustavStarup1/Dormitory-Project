@@ -3,6 +3,7 @@ package com.example.mydorm.controllers;
 import com.example.mydorm.models.Room;
 import com.example.mydorm.models.User;
 import com.example.mydorm.services.RoomService;
+import com.example.mydorm.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/room")
 public class RoomController {
+    List<User> users;
+
    @Autowired
     RoomService roomService;
+   @Autowired
+   UserService userService;
 
 @GetMapping("/")
 public String rooms(Model model, HttpSession session){
@@ -42,10 +47,55 @@ public String rooms(Model model, HttpSession session){
     public String room(@PathVariable ("id") int roomId, Model model, HttpSession session) {
        User user = (User)session.getAttribute("user");
        model.addAttribute("user", user);
-       Room room = roomService.getRoom(user.getId());
+       Room room = roomService.getRoom(roomId, user.getId());
        model.addAttribute("room", room);
-       roomId = room.getId();
-       return "home/room";
+       if (session.getAttribute("user") != null){
+         return "home/room_feed";
+      } else {
+         return "redirect:/login";
+      }
    }
+
+   @GetMapping("/{id}/calender")
+   public String calendar() {
+
+   return null;
+   }
+
+
+   @GetMapping("{id}/edit")
+    public String edit(HttpSession session, Model model, @PathVariable("id") int roomId){
+    User user = (User)session.getAttribute("user");
+    model.addAttribute("user", user);
+    Room room = roomService.getRoom(roomId, user.getId());
+    model.addAttribute(room);
+       if (session.getAttribute("user") != null){
+           return "home/room_edit";
+       }
+       else {
+           return "redirect:/";
+       }
+   }
+   @PostMapping("{id}/edit")
+    public String edit(@PathVariable("id") int id, @RequestParam String name, @RequestParam String bio) {
+    roomService.updateRoom(id, name, bio);
+    /*lav slet funktion*/
+    return "redirect:/room/{id}";
+   }
+
+   @GetMapping("{id}/invite")
+   public String invite(@PathVariable("id") int id, Model model) {
+    Room room = roomService.getRoom(id);
+    model.addAttribute("room", room);
+    model.addAttribute("users", users);
+    return "home/room_invite";
+   }
+
+   @PostMapping("/{id}/invite")
+    public String invite(@PathVariable("id") int id, Model model, @RequestParam String search) {
+       List<User> users = userService.searchUsers(search);
+       model.addAttribute("users", users);
+    return "redirect:/room/{id}/invite";
+}
 
 }

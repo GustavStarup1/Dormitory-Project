@@ -7,23 +7,9 @@
 <body>
 <header>
     <h1>MyDorm</h1>
+    <nav th:insert="~{home/fragments/navigation::navbar}"></nav>
 </header>
-<nav th:insert="~{home/fragments/navigation::navbar}"></nav>
-<h1>Forside</h1>
-<aside>
-    <div th:if="${user != null}" class="sidebar">
-        <ul>
-            <li>
-                <a target="iframe" th:href="@{/room/}">Rooms</a>
-                <ul>
-                    <li th:each="room : ${rooms}">
-                        <a target="iframe" th:href="@{/room/{id}(id=${room.id})}" th:text="${room.name}"></a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</aside>
+<aside th:insert="~{home/fragments/sidebar::sidebar}"></aside>
 <iframe name="iframe" height="600" width="1000" th:src="@{/homepage}"></iframe>
 </body>
 </html>

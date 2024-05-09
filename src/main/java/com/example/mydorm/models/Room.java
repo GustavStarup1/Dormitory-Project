@@ -7,7 +7,7 @@ public class Room {
     private String name;
     private String bio;
     private ArrayList<User> members;
-
+    private boolean admin;
 
     public String getName() {
         return name;
@@ -39,5 +39,13 @@ public class Room {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

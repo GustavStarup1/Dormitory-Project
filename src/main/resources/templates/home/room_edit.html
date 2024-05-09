@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit room</title>
+</head>
+<body>
+<div>
+<form th:action="@{/room/{id}/edit (id=${room.id})}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" th:value="${room.name}">
+    <label for="bio">Bio:</label>
+    <input type="text" name="bio" id="bio" th:value="${room.bio}">
+    <!--lav noget med member smid ud-->
+    <button type="submit">Gem</button>
+</form>
+</div>
+</body>
+</html>

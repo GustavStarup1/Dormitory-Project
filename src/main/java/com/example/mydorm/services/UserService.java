@@ -5,6 +5,8 @@ import com.example.mydorm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -20,5 +22,10 @@ public class UserService {
 
     public void update(User user, String email, String password) {
         userRepository.update(user, email, password);
+    }
+
+
+    public List<User> searchUsers(String keyword) {
+        return userRepository.searchUsers(keyword);
     }
 }

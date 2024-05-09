@@ -17,11 +17,17 @@ public class RoomService {
         roomRepository.insert(name, bio, admin);
     }
 
-    public Room getRoom(int id) {
-        return roomRepository.getRoom(id);
+    public Room getRoom(int roomId, int userID ) {
+        return roomRepository.getRoom(roomId, userID);
     }
-
+    public Room getRoom(int roomId) {
+        return roomRepository.getRoom(roomId);
+    }
     public List<Room> getRooms(int id) {
         return roomRepository.getRooms(id);
+    }
+
+    public void updateRoom(int id, String name, String bio) {
+        roomRepository.updateRoom(id, name, bio);
     }
 }

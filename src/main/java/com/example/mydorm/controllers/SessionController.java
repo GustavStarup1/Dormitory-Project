@@ -1,5 +1,6 @@
 package com.example.mydorm.controllers;
 
+import com.example.mydorm.models.Room;
 import com.example.mydorm.models.User;
 import com.example.mydorm.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +26,8 @@ public class SessionController {
         User user = userService.login(email, password);
         if (user != null) {
             session.setAttribute("user", user);
-            return "redirect:/";
+            model.addAttribute("user", user);
+            return "home/login_correct";
         }else{
             model.addAttribute("user", false);
             return "home/login";
@@ -38,5 +40,6 @@ public class SessionController {
         session.invalidate();
         return "redirect:/";
     }
+
 
 }

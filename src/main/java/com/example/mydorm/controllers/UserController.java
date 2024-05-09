@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Random;
 
 @Controller
 public class UserController {
     private boolean edit;
     @Autowired
-UserService userService; /*Det her eller autowired??*/
+UserService userService;
 
 
     @GetMapping("/new_user")
@@ -53,8 +54,11 @@ UserService userService; /*Det her eller autowired??*/
     public String save(HttpSession session, @RequestParam String email, @RequestParam String password) {
         User user = (User)session.getAttribute("user");
         userService.update(user, email, password);
+        edit = false;
         return "redirect:/profile";
     }
+
+
 
     private String generatePassword() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
