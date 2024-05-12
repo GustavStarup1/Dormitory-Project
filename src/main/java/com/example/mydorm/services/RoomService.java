@@ -30,4 +30,8 @@ public class RoomService {
     public void updateRoom(int id, String name, String bio) {
         roomRepository.updateRoom(id, name, bio);
     }
+
+    public void inviteUsers(int roomId, User user) {
+        roomRepository.insertUsers(roomId, user);
+    }
 }

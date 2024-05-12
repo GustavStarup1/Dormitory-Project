@@ -6,20 +6,26 @@
 </head>
 <body>
 <h1 th:text="'Inviter til ' + ${room.name}"></h1>
-<form method="post" th:action="@{/room/invite}">
+<form method="post" th:action="@{/room/{id}/invite (id=${room.id})}">
     <label for="search">Søg</label>
     <br>
     <input type="search" id="search" name="search" placeholder="Indtast navn">
     <button type="submit">Søg</button>
 </form>
+
 <div th:if="${users != null}">
     <h4>Søgeresultater:</h4>
-    <ul>
-        <!-- Gennemløb søgeresultaterne og vis dem -->
-        <li th:each="user : ${users}">
-            <span th:text="${result.firstname + ' ' + result.lastname}"></span>
-        </li>
-    </ul>
+    <form name="invite" id="invite" method="post" th:action="@{/room/{id}/invite_users (id=${room.id})}">
+        <ul>
+            <li th:each="user : ${users}">
+                <label>
+                    <span th:text="${user.firstName + ' ' + user.lastName}"></span>
+                    <input type="checkbox" name="selectedUsers" th:value="${user.id}">
+                </label>
+            </li>
+        </ul>
+        <button type="submit">Inviter valgte</button>
+    </form>
 </div>
 </body>
 </html>

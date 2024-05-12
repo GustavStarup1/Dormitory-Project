@@ -1,6 +1,5 @@
 package com.example.mydorm.controllers;
 
-import com.example.mydorm.models.Room;
 import com.example.mydorm.models.User;
 import com.example.mydorm.services.UserService;
 import jakarta.servlet.http.HttpSession;

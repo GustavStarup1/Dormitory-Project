@@ -28,4 +28,8 @@ public class UserService {
     public List<User> searchUsers(String keyword) {
         return userRepository.searchUsers(keyword);
     }
+
+    public User getUser(int id) {
+        return userRepository.getUser(id);
+    }
 }

@@ -74,5 +74,14 @@ public class UserRepository {
     }
 
 
+    public User getUser(int id) {
+        String query = "SELECT * FROM profile WHERE id = ?;";
+        RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
+        User user = jdbcTemplate.queryForObject(query, rowMapper, id);
+        if (user != null) {
+            getUserWithRooms(user);
+        }
+        return user;
+    }
 }
 

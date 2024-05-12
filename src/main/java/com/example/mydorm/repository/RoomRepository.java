@@ -31,6 +31,14 @@ public class RoomRepository {
         jdbcTemplate.update(insertRoomProfileQuery, roomId, adminId);
     }
 
+    public void insertUsers(int roomId, User user){
+            int userId = user.getId();
+            String query = "INSERT INTO room_profile (room_id, profile_id) VALUES (?, ?);";
+            jdbcTemplate.update(query, roomId, userId);
+
+
+    }
+
     public List<Room> getRooms(int id) {
         String query = "SELECT * FROM room " + // Vælg alle kolonner fra tabellen "room"
                 "INNER JOIN room_profile ON room.id = room_profile.room_id " + // laver en INNER JOIN mellem "room" og "room_profile" baseret på rum-id
