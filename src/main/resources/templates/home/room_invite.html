@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1 th:text="'Inviter til ' + ${room.name}"></h1>
-<form method="post" th:action="@{/room/{id}/invite (id=${room.id})}">
+<form method="post" th:action="@{invite}">
     <label for="search">Søg</label>
     <br>
     <input type="search" id="search" name="search" placeholder="Indtast navn">
@@ -15,7 +15,7 @@
 
 <div th:if="${users != null}">
     <h4>Søgeresultater:</h4>
-    <form name="invite" id="invite" method="post" th:action="@{/room/{id}/invite_users (id=${room.id})}">
+    <form name="invite" id="invite" method="post" th:action="@{invite_users}">
         <ul>
             <li th:each="user : ${users}">
                 <label>

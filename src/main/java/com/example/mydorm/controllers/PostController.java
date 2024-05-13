@@ -3,7 +3,6 @@ package com.example.mydorm.controllers;
 import com.example.mydorm.models.Post;
 import com.example.mydorm.models.User;
 import com.example.mydorm.services.PostService;
-import com.example.mydorm.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,28 +16,50 @@ import java.util.List;
 
 @Controller
 public class PostController {
-    @Autowired
-    PostService postService;
-    @Autowired
-    UserService userService;
 
-@GetMapping("room/{id}/feed")
-    public String feed(@PathVariable("id") int id, Model model){
-    List<Post> posts = postService.getPostsForRoom(id);
-    model.addAttribute("posts", posts);
-return "home/room_posts";
-}
+    @Autowired
+    private PostService postService;
 
-@PostMapping("room/{id}/new_post")
+
+    @GetMapping("room/{id}/feed")
+    public String feed(@PathVariable("id") int roomId, HttpSession session, Model model) {
+        User user = (User)session.getAttribute("user");
+        List<Post> posts = postService.getPostsForRoom(roomId, user.getId());
+        model.addAttribute("posts", posts);
+        return "home/room_posts";
+    }
+
+    @PostMapping("room/{id}/new_post")
     public String createPost(HttpSession session, @PathVariable("id") int roomId, @RequestParam String text) {
-    User user = (User)session.getAttribute("user");
-    postService.createPost(roomId, user.getId(), text);
-    return "redirect:/room/{id}";
-}
+        User user = (User) session.getAttribute("user");
+        postService.createPost(roomId, user.getId(), text);
+        return "redirect:/room/{id}";
+    }
 
+    @GetMapping("room/{id}/post/{post_id}/delete")
+    public String confirmDeletion(HttpSession session, @PathVariable("id") int roomId, @PathVariable("post_id") int postId, Model model) {
+        User user = (User) session.getAttribute("user");
+        Post post = postService.getPost(postId);
+        model.addAttribute("roomId", roomId);
+        if (user.getId() == post.getAuthor().getId() || user.isAdmin()) { /*hvis den bruger som er logget ind er forfatter eller admin kan de slette*/
+            model.addAttribute("post", post);
+            return "home/post_delete";
+        } else {
+            return "redirect:/room/{id}";
+        }
+    }
 
+    @PostMapping("room/{id}/post/{post_id}/delete")
+    public String delete(@PathVariable("post_id") int postId) {
+        postService.delete(postId);
+        return "redirect:/room/{id}";
+    }
 
-
-
+    @PostMapping("room/{id}/post/{post_id}/like")
+    public String like(@PathVariable("post_id")int postId, @PathVariable("id") int roomid, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        postService.likePost(postId, user.getId());
+        return "redirect:/room/{id}";
+    }
 
 }

@@ -47,13 +47,13 @@ public String rooms(Model model, HttpSession session){
        return "redirect:/";
    }
 
-   @GetMapping("/{id}")
+   @RequestMapping("/{id}")
     public String room(@PathVariable ("id") int roomId, Model model, HttpSession session) {
        User user = (User)session.getAttribute("user");
        model.addAttribute("user", user);
        Room room = roomService.getRoom(roomId, user.getId());
        model.addAttribute("room", room);
-       List<Post> posts = postService.getPostsForRoom(roomId);
+       List<Post> posts = postService.getPostsForRoom(roomId, user.getId());
        model.addAttribute("posts", posts);
        if (session.getAttribute("user") != null){
          return "home/room_feed";

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mydorm</title>
+</head>
+<body>
+<h1>Er du sikker?</h1>
+<p>Du er ved at slette:</p>
+<p class="text" th:text="${post.text}"></p>
+<form method="post" th:action="@{delete}">
+    <button type="submit">Slet</button>
+    <input th:value="${post.id}" type="hidden">
+</form>
+<a th:href="@{/room/{id} (id=${roomId})}"><button>Fortryd</button></a>
+
+</body>
+</html>

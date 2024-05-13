@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${room.name}"></title>
+    <style>
+        .liked {
+            color: red; /* eller anden ønsket farve */
+        }
+/*flyt det her til et stylesheet*/
+        .not-liked {
+            color: black; /* eller anden ønsket farve */
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -23,11 +32,28 @@
         </form>
     </div>
 
-
     <div th:each="post : ${posts}" class="post">
         <p class="author" th:text="${post.author.firstName + ' ' + post.author.lastName}"></p>
         <p class="text" th:text="${post.text}"></p>
-        <p th:text="${post.creationDate}"></p>
+        <p class="creation_date" th:text="${#dates.format(post.creationDate, 'dd-MM-yyyy HH:mm')}"></p>
+        <form th:action="@{{id}/post/{post_id}/like (post_id=${post.id}, id=${room.id})}" method="post">
+            <input type="hidden" th:value="${post.id}">
+            <button th:class="${post.isLiked() ? 'liked' : 'not-liked'}" type="submit">&hearts;</button>
+        </form>
+        <details>
+            <summary class="comment">Kommentarer</summary>
+            <label>
+                <!--<form action=""></form>-->
+            </label>
+        </details>
+        <details th:if="${post.author.id == user.id}">
+            <summary class="more">mere</summary>
+            <label>
+                <a th:href="@{/room/{id}/post/{post_id}/delete (id=${room.id}, post_id=${post.id})}">Slet</a>
+                <a th:href="@{/room/{id}/post_delete (id=${room.id})}">Rediger</a>
+            </label>
+        </details>
+
     </div>
 
 
