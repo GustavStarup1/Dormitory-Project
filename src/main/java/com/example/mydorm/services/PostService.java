@@ -1,5 +1,6 @@
 package com.example.mydorm.services;
 
+import com.example.mydorm.models.Comment;
 import com.example.mydorm.models.Post;
 import com.example.mydorm.models.User;
 import com.example.mydorm.repository.PostRepository;
@@ -16,6 +17,7 @@ public class PostService {
     UserService userService;
 
 
+
     public void createPost(int roomId, int userId, String text) {
         postRepository.create(roomId, userId, text);
     }
@@ -23,10 +25,7 @@ public class PostService {
     public List<Post> getPostsForRoom(int id, int userId) {
         List<Post> posts = postRepository.getPostsForRoom(id);
         for (Post post : posts){   /*giver hver post en forfatter som er User objekt*/
-            int profileId = post.getProfileId();
-            User author = userService.getUser(profileId);
-            post.setAuthor(author);
-            post.setUsersLiked(postRepository.getLikes(post.getId()));
+            setPostAttributes(post);
             checkForLike(post, userId);
         }
         return posts;
@@ -38,11 +37,15 @@ public class PostService {
 
     public Post getPost(int postId){
         Post post = postRepository.getPost(postId);
-        post.setAuthor(userService.getUser(post.getProfileId()));
-        post.setUsersLiked(postRepository.getLikes(post.getId()));
+        setPostAttributes(post);
         return post;
     }
-
+    public Post getPost(int postId, int userId){
+        Post post = postRepository.getPost(postId);
+        setPostAttributes(post);
+        checkForLike(post, userId);
+        return post;
+    }
     public void likePost(int postId, int userId) {
         postRepository.insertIntoPostLikes(postId, userId);
     }
@@ -54,6 +57,25 @@ public class PostService {
             if (user.getId() == userId) {
                 post.setLiked(true);
             }
+        }
+    }
+
+    public void removeLike(int postId, int id) {
+        postRepository.deleteFromPostLikes(postId, id);
+    }
+
+    public void addComment(int postId, int userId, String text) {
+        postRepository.insertComment(postId,userId,text);
+
+    }
+
+    public void setPostAttributes(Post post){
+        post.setAuthor(userService.getUser(post.getProfileId()));
+        post.setUsersLiked(postRepository.getLikes(post.getId()));
+        post.setComments(postRepository.getComments(post.getId()));
+        for (Comment comment : post.getComments()) {
+            comment.setAuthor(userService.getUser(comment.getProfileId()));
+            /*lav likes senere*/
         }
     }
 }

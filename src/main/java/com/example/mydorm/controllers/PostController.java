@@ -1,5 +1,6 @@
 package com.example.mydorm.controllers;
 
+import com.example.mydorm.models.Comment;
 import com.example.mydorm.models.Post;
 import com.example.mydorm.models.User;
 import com.example.mydorm.services.PostService;
@@ -21,13 +22,6 @@ public class PostController {
     private PostService postService;
 
 
-    @GetMapping("room/{id}/feed")
-    public String feed(@PathVariable("id") int roomId, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        List<Post> posts = postService.getPostsForRoom(roomId, user.getId());
-        model.addAttribute("posts", posts);
-        return "home/room_posts";
-    }
 
     @PostMapping("room/{id}/new_post")
     public String createPost(HttpSession session, @PathVariable("id") int roomId, @RequestParam String text) {
@@ -58,8 +52,20 @@ public class PostController {
     @PostMapping("room/{id}/post/{post_id}/like")
     public String like(@PathVariable("post_id")int postId, @PathVariable("id") int roomid, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        postService.likePost(postId, user.getId());
+        Post post = postService.getPost(postId, user.getId());
+        System.out.println(post.isLiked());
+        if (post.isLiked()){
+            postService.removeLike(postId, user.getId());
+        } else {
+            postService.likePost(postId, user.getId());        }
         return "redirect:/room/{id}";
     }
 
+
+    @PostMapping("/room/{id}/post/{post_id}/comment")
+    public String comment(@PathVariable("post_id")int postId, @PathVariable("id") int roomid, HttpSession session, @RequestParam String text){
+        User user = (User) session.getAttribute("user");
+        postService.addComment(postId, user.getId(), text);
+        return "redirect:/room/{id}";
+    }
 }

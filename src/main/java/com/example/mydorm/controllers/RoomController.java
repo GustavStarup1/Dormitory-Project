@@ -54,6 +54,7 @@ public String rooms(Model model, HttpSession session){
        Room room = roomService.getRoom(roomId, user.getId());
        model.addAttribute("room", room);
        List<Post> posts = postService.getPostsForRoom(roomId, user.getId());
+
        model.addAttribute("posts", posts);
        if (session.getAttribute("user") != null){
          return "home/room_feed";

@@ -5,3 +5,18 @@
 .not-liked {
     color: black; /* eller anden ønsket farve */
 }
+
+.post-actions {
+    display: inline;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px; /* Juster gap størrelsen efter behov */
+}
+
+.post-actions form,
+.post-actions details {
+    display: inline-block;
+    margin: 0;
+}

@@ -1,5 +1,6 @@
 package com.example.mydorm.repository;
 
+import com.example.mydorm.models.Comment;
 import com.example.mydorm.models.Post;
 import com.example.mydorm.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class PostRepository {
     }
 
     public List<Post> getPostsForRoom(int id) {
-        String query = "SELECT * FROM post WHERE room_id = ? ORDER BY creation_date";
+        String query = "SELECT * FROM post WHERE room_id = ? ORDER BY creation_date DESC ";
         RowMapper<Post> rowMapper = new BeanPropertyRowMapper<>(Post.class);
         return jdbcTemplate.query(query, rowMapper, id);
     }
@@ -48,4 +49,21 @@ public class PostRepository {
         String query = "INSERT INTO post_likes (post_id, profile_id) VALUES (?,?)";
         jdbcTemplate.update(query, postId, userId);
     }
+
+    public void deleteFromPostLikes(int postId, int userId) {
+        String query = "DELETE FROM post_likes WHERE post_id = ? AND profile_id = ?;";
+        jdbcTemplate.update(query, postId, userId);
+    }
+
+    public void insertComment(int postId, int userId, String text) {
+        String query = "INSERT INTO comment (post_id, profile_id, text) VALUES (?,?,?)";
+        jdbcTemplate.update(query, postId, userId, text);
+    }
+
+    public List<Comment> getComments(int postId){
+        String query= "SELECT * FROM comment WHERE post_id = ?;";
+        RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);
+        return jdbcTemplate.query(query, rowMapper, postId);
+    }
+
 }

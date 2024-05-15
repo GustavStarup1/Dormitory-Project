@@ -14,6 +14,7 @@ public class Post {
     private int likes;
     private List<User> usersLiked;
     private boolean liked;
+    private List<Comment> comments;
 
 
     public Post() {
@@ -89,5 +90,13 @@ public class Post {
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
