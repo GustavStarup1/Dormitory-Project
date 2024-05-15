@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Forside</title>
+    <link rel="stylesheet" th:href="@{../styles/stylesheet.css}">
 </head>
 <body>
 <header>
-    <h1>MyDorm</h1>
     <nav th:insert="~{home/fragments/navigation::navbar}"></nav>
+    <link>
 </header>
 <aside th:insert="~{home/fragments/sidebar::sidebar}"></aside>
 <iframe name="iframe" height="600" width="1000" th:src="@{/homepage}"></iframe>

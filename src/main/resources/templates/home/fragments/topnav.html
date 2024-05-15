@@ -4,5 +4,4 @@
   <a th:href="@{/room/{id}/members(id=${room.id})}">Medlemmer</a>
   <a th:if="${room.admin}" th:href="@{/room/{id}/edit(id=${room.id})}">Administrer</a>
   <a th:if="${room.admin}" th:href="@{/room/{id}/invite(id=${room.id})}">Inviter</a>
-
 </div>

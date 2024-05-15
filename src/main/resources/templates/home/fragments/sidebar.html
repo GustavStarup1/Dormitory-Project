@@ -1,14 +1,11 @@
 <div th:fragment="sidebar" th:if="${user != null}" class="sidebar">
     <ul>
-        <li>
-            <a target="iframe" th:href="@{/room/}">Alle rum</a>
+        <li><a target="iframe" th:href="@{/room/}">Alle rum</a>
             <ul>
                 <li th:each="room : ${rooms}">
                     <a target="iframe" th:href="@{/room/{id}(id=${room.id})}" th:text="${room.name}"></a>
                 </li>
             </ul>
-            <a th:href="">Om Østervold</a>
-            <a th:href="">Husordningen</a>
         </li>
     </ul>
 </div>

@@ -38,4 +38,23 @@ public class HomeController {
         return "home/homepage";
     }
 
+    @GetMapping("/about/rooms")
+    public String aboutRooms(){
+        return "home/about_rooms";
+    }
+
+    @GetMapping("/about/kitchens")
+    public String aboutKithens(){
+        return "home/about_kitchens";
+    }
+
+    @GetMapping("/about/application")
+    public String aboutApplication(){
+        return "home/about_application";
+    }
+
+    @GetMapping("/about/faqs")
+    public String aboutfaqs(){
+        return "home/about_faqs";
+    }
 }
