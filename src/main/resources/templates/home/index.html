@@ -10,7 +10,9 @@
     <nav th:insert="~{home/fragments/navigation::navbar}"></nav>
     <link>
 </header>
-<aside th:insert="~{home/fragments/sidebar::sidebar}"></aside>
+<div class="container">
+<aside th:replace="~{home/fragments/sidebar::sidebar}"></aside>
 <iframe name="iframe" height="600" width="1000" th:src="@{/homepage}"></iframe>
+</div>
 </body>
 </html>

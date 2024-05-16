@@ -2,21 +2,20 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navigation Bar with Dropdown</title>
+  <title>Østervold</title>
   <link rel="stylesheet" th:href="@{../styles/stylesheet.css}">
 </head>
 <body>
 <nav id="navbar" class="navbar" th:fragment="navbar">
   <ul>
-    <li><a th:href="@{/}"><button>Forside</button></a></li>
-    <li th:if="${admin == true}"><a target="iframe" th:href="@{/new_user}"><button>Opret ny bruger</button></a></li>
-    <li th:if="${user == null}"><a target="iframe" th:href="@{/login}"><button>Log ind</button></a></li>
-    <li th:if="${user != null}"><a target="_top" th:href="@{/logout}"><button>Log af</button></a></li>
-    <li th:if="${user != null}"><a target="iframe" th:href="@{/profile}"><button>Profil</button></a></li>
-    <li th:if="${user != null}"><a target="iframe" th:href="@{/room/new}"><button>Opret rum</button></a></li>
+    <li><a th:href="@{/}">Forside</a></li>
+    <li th:if="${admin == true}"><a target="iframe" th:href="@{/new_user}">Opret ny bruger</a></li>
+    <li th:if="${user == null}"><a target="iframe" th:href="@{/login}">Log ind</a></li>
+    <li th:if="${user != null}"><a target="_top" th:href="@{/logout}">Log af</a></li>
+    <li th:if="${user != null}"><a target="iframe" th:href="@{/profile}">Profil</a></li>
+    <li th:if="${user != null}"><a target="iframe" th:href="@{/room/new}">Opret rum</a></li>
     <li class="dropdown">
-      <a href="#" class="dropbtn"><button>Om Østervold</button></a>
+      <a href="#" class="dropbtn">Om Østervold</a>
       <div class="dropdown-content">
         <a target="iframe" th:href="@{/about/rooms}">Værelserne</a>
         <a target="iframe" th:href="@{/about/kitchens}">Køkkenerne</a>
