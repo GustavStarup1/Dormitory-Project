@@ -1,11 +1,20 @@
-<div th:fragment="sidebar" th:if="${user != null}" class="sidebar">
+<div th:fragment="sidebar" class="sidebar">
     <ul>
-        <li><a target="iframe" th:href="@{/room/}">Alle rum</a>
+        <li th:if="${user == null}"><a target="iframe" th:href="@{/login}">Log ind</a></li>
+        <li th:if="${user != null}"><a target="iframe" th:href="@{/profile}">Profil</a></li>
+        <li th:if="${user != null}"><a target="_top" th:href="@{/logout}">Log af</a></li>
+        <li><br></li>
+        <li><a target="iframe" th:if="${user != null}" th:href="@{/room/}">Alle rum</a>
             <ul>
                 <li th:each="room : ${rooms}">
-                    <a target="iframe" th:href="@{/room/{id}(id=${room.id})}" th:text="${room.name}"></a>
+                    <a class="rooms" target="iframe" th:href="@{/room/{id}(id=${room.id})}" th:text="${room.name}"></a>
                 </li>
             </ul>
+        </li>
+        <li th:if="${user != null}"><a target="iframe" th:href="@{/room/new}">Opret rum<br></a></li>
+        <li><br></li>
+        <li th:if="${admin == true}">Admin tools:
+            <ul><li th:if="${admin == true}"><a target="iframe" th:href="@{/new_user}">Opret ny bruger</a></li></ul>
         </li>
     </ul>
 </div>
