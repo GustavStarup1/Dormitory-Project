@@ -3,7 +3,6 @@ package com.example.mydorm.repository;
 import com.example.mydorm.models.Room;
 import com.example.mydorm.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,13 +20,21 @@ public class UserRepository {
         jdbcTemplate.update(query, firstName, lastName, email, password);
     }
 
+    /**
+     * Vælger bruger fra databasen hvor email og password matcher login inputtet.
+     * Hvis der er en bruger der matcher så kører den getRoomsForUser metoden som kobler alle rum brugeren er del af,
+     * sammen med bruger objektet før det sendes retur.
+     * @param email email
+     * @param password password
+     * @return user or null
+     */
     public User verifyUser(String email, String password) {
         String query = "SELECT * FROM mydorm.profile where email = ? and password = ?;";
         RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
         List<User> users = jdbcTemplate.query(query, rowMapper, email, password);
         if (!users.isEmpty()) {
             User user = users.get(0);
-            getUserWithRooms(user);
+            getRoomsForUser(user);
             return user;
         } else {
             return null;
@@ -40,8 +47,9 @@ public class UserRepository {
         jdbcTemplate.update(query, email, password, id);
     }
 
-    public void getUserWithRooms(User user) {
-        // Hent brugerens medlemsrum fra databasen
+    /*er muligvis helt irrelevant at have med*/
+    public void getRoomsForUser(User user) {
+        // Hent rum som brugeren er del af fra databasen
         int id = user.getId();
         String memberRoomsQuery = "SELECT * FROM room " +
                 "INNER JOIN room_profile ON room.id = room_profile.room_id " +
@@ -57,7 +65,12 @@ public class UserRepository {
         user.setAdminRooms(adminRooms);
     }
 
-
+    /**
+     * Modtager keyword fra input, splitter det op hvis der er mellemrum. Søger i databasen efter
+     * fornavne og efternavn som ligner keywordet.
+     * @param keyword søge input
+     * @return List<User>
+     */
     public List<User> searchUsers(String keyword) {
         if (keyword.contains(" ")){
             String[] name = keyword.split(" ");
@@ -73,13 +86,18 @@ public class UserRepository {
         }
     }
 
-
+    /**
+     * Bruges primært i postService klassen, til at sættes en bruger som forfatter af opslag blandt andre ting.
+     * Bruges også til at invitere brugere til rum.
+     * @param id userId
+     * @return User
+     */
     public User getUser(int id) {
         String query = "SELECT * FROM profile WHERE id = ?;";
         RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
         User user = jdbcTemplate.queryForObject(query, rowMapper, id);
         if (user != null) {
-            getUserWithRooms(user);
+            getRoomsForUser(user);
         }
         return user;
     }

@@ -54,8 +54,8 @@ public String rooms(Model model, HttpSession session){
        Room room = roomService.getRoom(roomId, user.getId());
        model.addAttribute("room", room);
        List<Post> posts = postService.getPostsForRoom(roomId, user.getId());
-
        model.addAttribute("posts", posts);
+       /*hvis man ikke er logget ind kan man ikke tilgå nogen rum*/
        if (session.getAttribute("user") != null){
          return "home/room_feed";
       } else {
@@ -91,34 +91,39 @@ public String rooms(Model model, HttpSession session){
    }
 
    @GetMapping("{id}/invite")
-   public String invite(@PathVariable("id") int id, Model model) {
-    Room room = roomService.getRoom(id);
+   public String invite(@PathVariable("id") int id, Model model, HttpSession session) {
+    User user = (User)session.getAttribute("user");
+    Room room = roomService.getRoom(id, user.getId());
     model.addAttribute("room", room);
     model.addAttribute("users", users);
     return "home/room_invite";
    }
 
+   /*viser alle bruger som matcher søgningen*/
    @PostMapping("/{id}/invite")
-    public String invite(@PathVariable("id") int id, Model model, @RequestParam String search) {
+    public String invite(@PathVariable("id") int id, Model model, @RequestParam String search, HttpSession session) {
+       User user = (User)session.getAttribute("user");
        List<User> users = userService.searchUsers(search);
-       model.addAttribute("room", roomService.getRoom(id));
+       Room room = roomService.getRoom(id, user.getId());
+       model.addAttribute("room", room);
        model.addAttribute("users", users);
     return "home/room_invite";
 
 }
 
+    /*Inviterer de valgte brugere*/
     @PostMapping("/{id}/invite_users")
     public String inviteUsers(@PathVariable("id") int roomId, @RequestParam List<Integer> selectedUsers) {
         for (Integer userId : selectedUsers) {
             User user = userService.getUser(userId);
-            // Gennemgår hvert rum, som brugeren er medlem af
+            // Gennemgår hvert rum som brugeren er medlem af
             for (Room room : user.getRooms()) {
-                // Tjekker om brugeren allerede er medlem af det ønskede rum
+                // Tjekker om brugeren allerede er medlem af det rummet
                 if (room.getId() == roomId) {
                     return "redirect:/room/{id}";
                 }
             }
-            // Hvis brugeren ikke allerede er medlem af det ønskede rum, inviteres de
+            // Hvis brugeren ikke allerede er medlem af rummet inviteres de.
             roomService.inviteUsers(roomId, user);
         }
         return "redirect:/room/{id}";

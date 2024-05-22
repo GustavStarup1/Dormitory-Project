@@ -15,18 +15,21 @@ import java.util.List;
 public class RoomRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
-
+/**
+ * Der stod på nettet at man kunne bruge transactional hvis man bruger flere queries i én metode, for at mindske fejl
+ * hvor flere bruger sender flere queries af sted samtidigt.
+ */
     @Transactional
     public void insert(String name, String bio, User admin) {
         int adminId = admin.getId();
         String query = "INSERT INTO room (name, bio) VALUES (?,?);";
         jdbcTemplate.update(query, name, bio);
 
-        // Hent det nyoprettede rums ID
-        String getRoomIdQuery = "SELECT LAST_INSERT_ID()";
+        /*Henter det nyoprettede rums ID*/
+        String getRoomIdQuery = "SELECT LAST_INSERT_ID()"; /*henter id fra det sidste der blev insertet*/
         Integer roomId = jdbcTemplate.queryForObject(getRoomIdQuery, Integer.class);
 
-        // Tilknyt administratorprofilen til rummet
+        /*Tilknyt admin til rummet*/
         String insertRoomProfileQuery = "INSERT INTO room_profile (room_id, profile_id, admin) VALUES (?, ?, 1);";
         jdbcTemplate.update(insertRoomProfileQuery, roomId, adminId);
     }
@@ -40,13 +43,20 @@ public class RoomRepository {
     }
 
     public List<Room> getRooms(int id) {
-        String query = "SELECT * FROM room " + // Vælg alle kolonner fra tabellen "room"
-                "INNER JOIN room_profile ON room.id = room_profile.room_id " + // laver en INNER JOIN mellem "room" og "room_profile" baseret på rum-id
-                "WHERE room_profile.profile_id = ?;"; // Filtrer resultater baseret på brugerprofilens id
+        String query = "SELECT * FROM room " +
+                "INNER JOIN room_profile ON room.id = room_profile.room_id " +
+                "WHERE room_profile.profile_id = ?;";
         RowMapper<Room> rowMapper = new BeanPropertyRowMapper<>(Room.class);
         return jdbcTemplate.query(query, rowMapper, id);
     }
 
+    /**
+     * Returnerer et rum. Modtager user id og room id for at lave en inner join med room_profile.
+     * På den måde henter den rummet og om brugeren er administrator for rumme, gennem room_profile, som har en admin column.
+     * @param roomId rummet som man vil tilgå.
+     * @param userId brugeren som er logget ind.
+     * @return jdbcTemplate.queryForObject
+     */
     public Room getRoom(int roomId, int userId) {
         String query = "SELECT * FROM room " +
                 "INNER JOIN room_profile ON room.id = room_profile.room_id " +
@@ -55,11 +65,6 @@ public class RoomRepository {
         return jdbcTemplate.queryForObject(query, rowMapper, roomId, userId);
     }
 
-    public Room getRoom(int roomId) {
-        String query = "SELECT * FROM room WHERE id = ?;";
-        RowMapper<Room> rowMapper = new BeanPropertyRowMapper<>(Room.class);
-        return jdbcTemplate.queryForObject(query, rowMapper, roomId);
-    }
 
     public void updateRoom(int id, String name, String bio) {
             String query = "UPDATE mydorm.room SET name = ?, bio = ? WHERE id = ?;";

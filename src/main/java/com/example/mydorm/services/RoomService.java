@@ -20,9 +20,7 @@ public class RoomService {
     public Room getRoom(int roomId, int userID ) {
         return roomRepository.getRoom(roomId, userID);
     }
-    public Room getRoom(int roomId) {
-        return roomRepository.getRoom(roomId);
-    }
+
     public List<Room> getRooms(int id) {
         return roomRepository.getRooms(id);
     }

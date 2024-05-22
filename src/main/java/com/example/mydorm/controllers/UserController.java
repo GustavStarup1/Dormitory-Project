@@ -34,9 +34,9 @@ UserService userService;
 
     @GetMapping("/profile")
     public String profile(HttpSession session, Model model){
-        User user = (User)session.getAttribute("user"); /*hvordan jeg gjorde det virke*/
+        User user = (User)session.getAttribute("user");
         model.addAttribute("user", user);
-        model.addAttribute("edit", edit);
+        model.addAttribute("edit", edit); /*gør at felter er redigerbare efter om edit er true eller false*/
         if (session.getAttribute("user") != null){
             return "home/profile";
         } else {
@@ -46,7 +46,7 @@ UserService userService;
 
     @PostMapping("/profile/edit")
     public String editProfile() {
-        edit = true;
+        edit = true; /*Nu vil home/profile vise redigerings felter*/
         return "redirect:/profile";
     }
 
@@ -59,7 +59,7 @@ UserService userService;
     }
 
 
-
+/*laver et tilfældigt password som brugeren skal bruge første gang de logger ind og så kan de ændre det*/
     private String generatePassword() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random rnd = new Random();

@@ -1,5 +1,0 @@
-<div th:each="post : ${posts}" class="post">
-    <p class="author" th:text="${post.author.firstName + ' ' + post.author.lastName}"></p>
-    <p class="text" th:text="${post.text}"></p>
-    <p th:text="${post.creationDate}"></p>
-</div>

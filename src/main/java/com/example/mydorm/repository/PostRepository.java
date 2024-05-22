@@ -21,22 +21,26 @@ public class PostRepository {
         jdbcTemplate.update(query, roomId, profileId, text);
     }
 
+    /*tager alle posts for et given rum*/
     public List<Post> getPostsForRoom(int id) {
         String query = "SELECT * FROM post WHERE room_id = ? ORDER BY creation_date DESC ";
         RowMapper<Post> rowMapper = new BeanPropertyRowMapper<>(Post.class);
         return jdbcTemplate.query(query, rowMapper, id);
     }
+
     public void delete(int postId) {
         String query = "DELETE FROM post WHERE id = ?";
         jdbcTemplate.update(query, postId);
     }
 
+    /*tager et post ud fra dets id*/
     public Post getPost(int postId) {
         String query = "SELECT * FROM post WHERE id = ?;";
         RowMapper<Post> rowMapper = new BeanPropertyRowMapper<>(Post.class);
         return jdbcTemplate.queryForObject(query, rowMapper, postId);
     }
 
+    /*tager en liste af de brugere der har liket det post*/
     public List<User> getLikes(int postId) {
         String query = "SELECT * FROM profile INNER JOIN post_likes ON profile.id = post_likes.profile_id WHERE post_id = ?;";
         RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
@@ -44,7 +48,7 @@ public class PostRepository {
         return users;
     }
 
-
+    /*sætter et bruger id og post id ind i post_likes table*/
     public void insertIntoPostLikes(int postId, int userId) {
         String query = "INSERT INTO post_likes (post_id, profile_id) VALUES (?,?)";
         jdbcTemplate.update(query, postId, userId);
@@ -60,6 +64,7 @@ public class PostRepository {
         jdbcTemplate.update(query, postId, userId, text);
     }
 
+    /*tager alle kommentarer for et post*/
     public List<Comment> getComments(int postId){
         String query= "SELECT * FROM comment WHERE post_id = ?;";
         RowMapper<Comment> rowMapper = new BeanPropertyRowMapper<>(Comment.class);

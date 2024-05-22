@@ -54,7 +54,26 @@ public class HomeController {
     }
 
     @GetMapping("/about/faqs")
-    public String aboutfaqs(){
+    public String aboutFaqs(){
         return "home/about_faqs";
     }
+
+    @GetMapping("/rules/house_rules")
+    public String houseRules(){
+        return "home/rules_terms";
+    }
+
+
+    @GetMapping("/rules/internal_relocation")
+    public String internalRelocation(){
+        return "home/rules_internal_relocation";
+    }
+
+    @GetMapping("/rules/subleasing")
+    public String subleasing(){
+        return "home/rules_subleasing";
+    }
+
+
+
 }

@@ -143,3 +143,8 @@ iframe {
     flex-grow: 1;
     display: flex;
 }
+
+iframe.pdfview {
+    width: 100%;
+    height: 35rem;
+}

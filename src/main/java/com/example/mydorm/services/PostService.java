@@ -22,9 +22,16 @@ public class PostService {
         postRepository.create(roomId, userId, text);
     }
 
-    public List<Post> getPostsForRoom(int id, int userId) {
-        List<Post> posts = postRepository.getPostsForRoom(id);
-        for (Post post : posts){   /*giver hver post en forfatter som er User objekt*/
+    /**
+     * For hver post kører metoderne setPostAttributes og checkForLike. setPostAttributes sætter author, usersLiked og comments
+     * attributter for hver post. CheckForLike checker om brugeren der er logget ind har liket det.
+     * @param PostId post id
+     * @param userId user id
+     * @return List<Post>
+     */
+    public List<Post> getPostsForRoom(int PostId, int userId) {
+        List<Post> posts = postRepository.getPostsForRoom(PostId);
+        for (Post post : posts){
             setPostAttributes(post);
             checkForLike(post, userId);
         }
@@ -46,6 +53,7 @@ public class PostService {
         checkForLike(post, userId);
         return post;
     }
+
     public void likePost(int postId, int userId) {
         postRepository.insertIntoPostLikes(postId, userId);
     }
@@ -69,13 +77,13 @@ public class PostService {
 
     }
 
+    /*Sætter attributter for post objektet som ikke kan hentes med databasen*/
     public void setPostAttributes(Post post){
         post.setAuthor(userService.getUser(post.getProfileId()));
         post.setUsersLiked(postRepository.getLikes(post.getId()));
         post.setComments(postRepository.getComments(post.getId()));
         for (Comment comment : post.getComments()) {
             comment.setAuthor(userService.getUser(comment.getProfileId()));
-            /*lav likes senere*/
         }
     }
 }
