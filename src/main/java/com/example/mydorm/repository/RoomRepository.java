@@ -16,7 +16,7 @@ public class RoomRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 /**
- * Der stod på nettet at man kunne bruge transactional hvis man bruger flere queries i én metode, for at mindske fejl
+ * Der stod på nettet at man kunne bruge @transactional, hvis man bruger flere queries i én metode, for at mindske fejl
  * hvor flere bruger sender flere queries af sted samtidigt.
  */
     @Transactional

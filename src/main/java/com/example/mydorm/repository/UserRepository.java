@@ -77,11 +77,11 @@ public class UserRepository {
             String firstName = name[0];
             String lastName = name[1];
             String query = "SELECT * FROM profile WHERE first_name LIKE ? OR last_name LIKE ?";
-            RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);        /*find ud af hvad fucker der foregår*/
+            RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
             return jdbcTemplate.query(query, rowMapper, "%" + firstName + "%", "%" + lastName + "%");
         } else {
             String query = "SELECT * FROM profile WHERE first_name LIKE ?";
-            RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);        /*find ud af hvad fucker der foregår*/
+            RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
             return jdbcTemplate.query(query, rowMapper, "%" + keyword + "%");
         }
     }
