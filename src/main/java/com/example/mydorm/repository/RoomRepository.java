@@ -67,7 +67,7 @@ public class RoomRepository {
 
 
     public void updateRoom(int id, String name, String bio) {
-            String query = "UPDATE mydorm.room SET name = ?, bio = ? WHERE id = ?;";
+            String query = "UPDATE room SET name = ?, bio = ? WHERE id = ?;";
             jdbcTemplate.update(query, name, bio, id);
     }
 }

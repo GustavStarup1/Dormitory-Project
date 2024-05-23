@@ -29,7 +29,7 @@ public class UserRepository {
      * @return user or null
      */
     public User verifyUser(String email, String password) {
-        String query = "SELECT * FROM mydorm.profile where email = ? and password = ?;";
+        String query = "SELECT * FROM profile where email = ? and password = ?;";
         RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
         List<User> users = jdbcTemplate.query(query, rowMapper, email, password);
         if (!users.isEmpty()) {
@@ -43,7 +43,7 @@ public class UserRepository {
 
     public void update(User user, String email, String password) {
         int id = user.getId();
-        String query = "UPDATE mydorm.profile SET email = ?, password = ? WHERE id = ?;";
+        String query = "UPDATE profile SET email = ?, password = ? WHERE id = ?;";
         jdbcTemplate.update(query, email, password, id);
     }
 
