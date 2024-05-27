@@ -58,6 +58,11 @@ public class HomeController {
         return "home/about_faqs";
     }
 
+    @GetMapping("/about/community")
+    public String community(){
+        return "home/about_community";
+    }
+
     @GetMapping("/rules/house_rules")
     public String houseRules(){
         return "home/rules_terms";

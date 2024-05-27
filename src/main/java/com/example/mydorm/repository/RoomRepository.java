@@ -52,7 +52,7 @@ public class RoomRepository {
 
     /**
      * Returnerer et rum. Modtager user id og room id for at lave en inner join med room_profile.
-     * På den måde henter den rummet og om brugeren er administrator for rumme, gennem room_profile, som har en admin column.
+     * På den måde henter den rummet og om brugeren er administrator for rummet, gennem room_profile, som har en admin column.
      * @param roomId rummet som man vil tilgå.
      * @param userId brugeren som er logget ind.
      * @return jdbcTemplate.queryForObject

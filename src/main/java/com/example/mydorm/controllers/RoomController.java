@@ -17,7 +17,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/room")
 public class RoomController {
-    List<User> users;
 
    @Autowired
     RoomService roomService;
@@ -95,7 +94,6 @@ public String rooms(Model model, HttpSession session){
     User user = (User)session.getAttribute("user");
     Room room = roomService.getRoom(id, user.getId());
     model.addAttribute("room", room);
-    model.addAttribute("users", users);
     return "home/room_invite";
    }
 
