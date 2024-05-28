@@ -74,3 +74,4 @@ INSERT INTO room_profile (room_id, profile_id, admin) VALUES ('3', '1', '1');
 INSERT INTO room_profile (room_id, profile_id, admin) VALUES ('4', '1', '1');
 INSERT INTO room_profile (room_id, profile_id, admin) VALUES ('5', '1', '1');
 INSERT INTO room_profile (room_id, profile_id, admin) VALUES ('6', '1', '1');
+INSERT INTO room_profile (room_id, profile_id, admin) VALUES ('1', '2', '0');
