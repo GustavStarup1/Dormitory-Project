@@ -15,19 +15,19 @@
 </header>
 
 
-<div id="feed-container">
-    <div class="create_post">
+<div class="feed-container">
+    <div class="create-post">
         <form id="post" th:action="@{{id}/new_post (id=${room.id})}" method="post">
             <label for="text"></label>
             <textarea form="post" id="text" name="text"  placeholder="Skriv her..."></textarea>
-            <button type="submit">slå op</button>
+            <button type="submit">Slå op</button>
         </form>
     </div>
 
     <div th:each="post : ${posts}" class="post">
         <p class="author" th:text="${post.author.firstName + ' ' + post.author.lastName}"></p>
         <p class="text" th:text="${post.text}"></p>
-        <p class="creation_date" th:text="${#dates.format(post.creationDate, 'dd-MM-yyyy HH:mm')}"></p>
+        <p class="creation-date" th:text="${#dates.format(post.creationDate, 'dd-MM-yyyy HH:mm')}"></p>
 
         <div class="post-actions">
             <form class="like-post" th:action="@{{id}/post/{post_id}/like (post_id=${post.id}, id=${room.id})}" method="post">
@@ -40,9 +40,9 @@
                     <input type="text" name="text" placeholder="Skriv en kommentar...">
                     <button type="submit">Send</button>
                 </form>
-                <div th:each="comment : ${post.getComments()}">
-                    <p th:text="${comment.author.firstName + ' ' + comment.author.lastName}"></p>
-                    <p th:text="${comment.text}"></p>
+                <div class="comment" th:each="comment : ${post.getComments()}">
+                    <p class="author" th:text="${comment.author.firstName + ' ' + comment.author.lastName}"></p>
+                    <p class="text" th:text="${comment.text}"></p>
                 </div>
                 <p th:if="${#lists.isEmpty(post.getComments())}">Ingen kommentarer endnu</p>
             </details>
