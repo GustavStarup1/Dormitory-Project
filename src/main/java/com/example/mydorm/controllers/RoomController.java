@@ -23,7 +23,7 @@ public class RoomController {
    @Autowired
    UserService userService;
    @Autowired
-   PostService postService; /*må jeg gerne have dem alle*/
+   PostService postService;
 
 @GetMapping("/")
 public String rooms(Model model, HttpSession session){
@@ -85,7 +85,6 @@ public String rooms(Model model, HttpSession session){
    @PostMapping("{id}/edit")
     public String edit(@PathVariable("id") int id, @RequestParam String name, @RequestParam String bio) {
     roomService.updateRoom(id, name, bio);
-    /*lav slet funktion*/
     return "redirect:/room/{id}";
    }
 
@@ -114,14 +113,13 @@ public String rooms(Model model, HttpSession session){
     public String inviteUsers(@PathVariable("id") int roomId, @RequestParam List<Integer> selectedUsers) {
         for (Integer userId : selectedUsers) {
             User user = userService.getUser(userId);
-            // Gennemgår hvert rum som brugeren er medlem af
             for (Room room : user.getRooms()) {
-                // Tjekker om brugeren allerede er medlem af det rummet
+                /*Tjekker om brugeren allerede er medlem af det rummet*/
                 if (room.getId() == roomId) {
                     return "redirect:/room/{id}";
                 }
             }
-            // Hvis brugeren ikke allerede er medlem af rummet inviteres de.
+            /*Hvis brugeren ikke allerede er medlem af rummet inviteres de.*/
             roomService.inviteUsers(roomId, user);
         }
         return "redirect:/room/{id}";

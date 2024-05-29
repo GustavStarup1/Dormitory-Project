@@ -49,7 +49,7 @@ public class UserRepository {
 
     /*er muligvis helt irrelevant at have med*/
     public void getRoomsForUser(User user) {
-        // Hent rum som brugeren er del af fra databasen
+        /*Hent rum som brugeren er del af fra databasen*/
         int id = user.getId();
         String memberRoomsQuery = "SELECT * FROM room " +
                 "INNER JOIN room_profile ON room.id = room_profile.room_id " +
@@ -57,7 +57,7 @@ public class UserRepository {
         List<Room> memberRooms = jdbcTemplate.query(memberRoomsQuery, new BeanPropertyRowMapper<>(Room.class), id);
         user.setRooms(memberRooms);
 
-        // Hent brugerens administratorrum fra databasen
+        /*Hent brugerens administratorrum fra databasen*/
         String adminRoomsQuery = "SELECT * FROM room " +
                 "INNER JOIN room_profile ON room.id = room_profile.room_id " +
                 "WHERE room_profile.profile_id = ? AND room_profile.admin = 1";
